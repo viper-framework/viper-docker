@@ -6,6 +6,10 @@
 FROM ubuntu:14.04
 MAINTAINER Viper-Framework (https://github.com/viper-framework)
 
+ENV SSDEEP_VERSION     2.13
+ENV ANDROGUARD_VERSION 1.9
+ENV VIPER_VERSION      1.2
+
 USER root
 RUN apt-get update && apt-get install -y \
     git \
@@ -42,14 +46,14 @@ RUN cd ~/tmp_build && \
 
 # Install SSDEEP
 RUN cd ~/tmp_build &&\
-  curl -SL http://sourceforge.net/projects/ssdeep/files/ssdeep-2.13/ssdeep-2.13.tar.gz/download | \
+  curl -sSL http://sourceforge.net/projects/ssdeep/files/ssdeep-${SSDEEP_VERSION}/ssdeep-${SSDEEP_VERSION}.tar.gz/download | \
   tar -xzC .  && \
-  cd ssdeep-2.13 && \
+  cd ssdeep-${SSDEEP_VERSION} && \
   ./configure && \
   make install && \
   pip install pydeep && \
   cd .. && \
-  rm -rf ssdeep-2.13
+  rm -rf ssdeep-${SSDEEP_VERSION}
   
 # Install PyExif
 RUN cd ~/tmp_build && \
@@ -59,9 +63,9 @@ RUN cd ~/tmp_build && \
   
 # Install AndroGuard
 RUN cd ~/tmp_build && \
-  curl -SL https://androguard.googlecode.com/files/androguard-1.9.tar.gz | \
+  curl -sSL https://github.com/androguard/androguard/archive/${ANDROGUARD_VERSION}.tar.gz | \
   tar -xzC .  && \
-  cd androguard-1.9 && \
+  cd androguard-${ANDROGUARD_VERSION} && \
   python setup.py install
 
 # Create Viper User
@@ -75,7 +79,7 @@ RUN rm -rf ~/tmp_build
 
 USER viper
 WORKDIR /home/viper
-RUN git clone https://github.com/botherder/viper.git && \
+RUN git clone -b v${VIPER_VERSION} https://github.com/botherder/viper.git && \
   mkdir /home/viper/workdir
 
 USER root
