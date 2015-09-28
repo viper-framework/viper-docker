@@ -6,7 +6,9 @@
 FROM ubuntu:14.04
 MAINTAINER Viper-Framework (https://github.com/viper-framework)
 
+ENV YARA_VERSION       3.4.0
 ENV SSDEEP_VERSION     2.13
+ENV PYEXIF_VERSION     0.2.0
 ENV ANDROGUARD_VERSION 1.9
 ENV VIPER_VERSION      1.2
 
@@ -33,7 +35,7 @@ RUN mkdir ~/tmp_build
 
 # Install Yara
 RUN cd ~/tmp_build && \
-  git clone https://github.com/plusvic/yara.git && \
+  git clone -b v${YARA_VERSION} https://github.com/plusvic/yara.git && \
   cd yara && \
   bash build.sh && \
   make install && \
@@ -57,7 +59,7 @@ RUN cd ~/tmp_build &&\
   
 # Install PyExif
 RUN cd ~/tmp_build && \
-  git clone git://github.com/smarnach/pyexiftool.git && \
+  git clone -b v${PYEXIF_VERSION} git://github.com/smarnach/pyexiftool.git && \
   cd pyexiftool && \
   python setup.py install 
   
