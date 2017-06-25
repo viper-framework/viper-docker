@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     libtool \
     autoconf \
+    flex \
     python-socksipy \
     python-m2crypto \
     python-levenshtein \
@@ -56,13 +57,13 @@ RUN cd ~/tmp_build &&\
   pip install pydeep && \
   cd .. && \
   rm -rf ssdeep-${SSDEEP_VERSION}
-  
+
 # Install PyExif
 RUN cd ~/tmp_build && \
   git clone -b v${PYEXIF_VERSION} git://github.com/smarnach/pyexiftool.git && \
   cd pyexiftool && \
-  python setup.py install 
-  
+  python setup.py install
+
 # Install AndroGuard
 RUN cd ~/tmp_build && \
   curl -sSL https://github.com/androguard/androguard/archive/${ANDROGUARD_VERSION}.tar.gz | \
